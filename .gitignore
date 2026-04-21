@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.python-version
+
+# Virtual Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Logs
+*.log
+app.log
+crash.log
+
+# Configuration (Sensitive tokens inside)
+config.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+tool_test/
