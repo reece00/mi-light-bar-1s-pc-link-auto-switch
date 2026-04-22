@@ -87,12 +87,23 @@ class MiioDevice:
             s.settimeout(1.0)
             hello_packet = bytes.fromhex('21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
             
-            # 发送广播包
-            try:
-                s.sendto(hello_packet, ('<broadcast>', 54321))
-            except Exception as e:
-                log(f"广播发送失败: {e}")
-                return None
+            # 发送广播包 (增加针对网络未就绪的重试)
+            max_send_retries = 3
+            for i in range(max_send_retries):
+                try:
+                    s.sendto(hello_packet, ('<broadcast>', 54321))
+                    break
+                except OSError as e:
+                    # 10065 = WSAEHOSTUNREACH, 10051 = WSAENETUNREACH
+                    if e.errno in (10065, 10051) and i < max_send_retries - 1:
+                        log(f"网络未就绪 (错误 {e.errno})，2秒后重试广播...")
+                        time.sleep(2)
+                        continue
+                    log(f"广播发送失败: {e}")
+                    return None
+                except Exception as e:
+                    log(f"广播发送失败: {e}")
+                    return None
 
             start_time = time.time()
             # 在 2 秒内监听所有回包
@@ -287,8 +298,8 @@ class MiLightController:
                 log(f"控灯最终失败 ({state})")
 
     def on_resume_with_delay(self):
-        log("系统已唤醒，等待 5 秒网络恢复后开灯...")
-        time.sleep(5)
+        log("系统已唤醒，等待 10 秒网络恢复后开灯...")
+        time.sleep(10)
         self.toggle_light("on")
 
     def create_icon_image(self):
