@@ -30,5 +30,5 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
-tool_test/
+.tool_test/
 .trae/

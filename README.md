@@ -11,27 +11,17 @@
 
 ### 0. 准备工作
 在开始之前，请确保你的系统已安装以下工具：
-- **Python 3.14+**: 程序核心运行环境。
-- **uv**:  Python 包管理工具（推荐）。如果你还没有安装，可以在 PowerShell 中运行：
+- **Python 3.13+**: 程序核心运行环境。
+- **uv**:  Python 包管理工具。如果你还没有安装，可以在 PowerShell 中运行：
   ```powershell
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
 ### 1. 安装环境
-#### 方式一：使用 uv (推荐)
 ```powershell
 pwsh install.ps1
 ```
-*脚本会自动创建虚拟环境并配置必要的 Windows 系统组件。*
-
-#### 方式二：使用 pip 手动安装
-```powershell
-# 1. 安装依赖
-pip install pillow pycryptodome pystray pywin32
-
-# 2. 必须执行：配置 pywin32 系统组件
-python -m pywin32_postinstall -install
-```
+*脚本会自动使用 uv 创建虚拟环境并配置必要的 Windows 系统组件。*
 
 ### 2. 配置设备
 编辑项目根目录下的 `config.json`，填入以下必要信息：
@@ -39,14 +29,8 @@ python -m pywin32_postinstall -install
 - **IP**: 挂灯的局域网 IP。
 
 ### 3. 运行
-#### 使用 uv
 ```powershell
 uv run python main.py
-```
-
-#### 手动运行
-```powershell
-python main.py
 ```
 运行后，右键点击系统托盘图标可进行手动控制及自动化设置。
 
